@@ -16,7 +16,7 @@ public class Player {
 
     private String position;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nationality_id", referencedColumnName = "id")
     private Nationality nationality;
 }

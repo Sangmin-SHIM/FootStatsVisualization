@@ -1,6 +1,5 @@
 package com.example.FootballStats.controller;
 
-import com.example.FootballStats.entity.League;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.repo.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,8 @@ public class PlayerController {
     PlayerRepository playerRepository;
 
     @RequestMapping(path="", method= RequestMethod.GET)
-    public String getAllPlayersCount(){
-        return "All Players Count : " + playerRepository.count();
+    public List<Player> getAllPlayers(){
+        return (List<Player>) playerRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @RequestMapping(path="/{id}", method= RequestMethod.GET)
