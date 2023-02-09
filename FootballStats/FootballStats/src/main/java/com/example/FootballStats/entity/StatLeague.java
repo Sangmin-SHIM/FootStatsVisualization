@@ -1,5 +1,6 @@
 package com.example.FootballStats.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,6 +33,7 @@ public class StatLeague {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "league_id", referencedColumnName = "id")
+    @JsonBackReference
     private League league;
 }
 

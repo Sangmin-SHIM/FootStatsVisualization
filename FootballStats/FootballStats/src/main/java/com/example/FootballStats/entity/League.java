@@ -1,5 +1,6 @@
 package com.example.FootballStats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +20,7 @@ public class League {
 
     @OneToMany(mappedBy = "league",fetch=FetchType.LAZY)
     @JsonManagedReference
+    @JsonIgnoreProperties("league")
     private List<Club> clubs;
 
 }

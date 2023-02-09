@@ -1,6 +1,6 @@
 package com.example.FootballStats.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +17,7 @@ public class Club {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "league_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnoreProperties({"clubs","hibernateLazyInitializer"})
     private League league;
 
 }
