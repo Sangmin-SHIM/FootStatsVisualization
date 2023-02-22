@@ -24,9 +24,9 @@ public class StatPlayerController {
         return (List<StatPlayer>) statPlayerRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    @RequestMapping(path="/{id}", method= RequestMethod.GET)
-    public StatPlayer getStatPlayerById (@PathVariable("id") Long id){
-        Optional<StatPlayer> statPlayer = statPlayerRepository.findById(id);
+    @RequestMapping(path="/{stat_player_id}", method= RequestMethod.GET)
+    public StatPlayer getStatPlayerById (@PathVariable("stat_player_id") Long stat_player_id){
+        Optional<StatPlayer> statPlayer = statPlayerRepository.findById(stat_player_id);
         return statPlayer.orElse(null);
     }
 }

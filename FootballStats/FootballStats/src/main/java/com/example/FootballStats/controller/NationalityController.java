@@ -25,9 +25,9 @@ public class NationalityController {
         return (List<Nationality>) nationalityRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    @RequestMapping(path="/{id}", method= RequestMethod.GET)
-    public Nationality getNationalityById (@PathVariable("id") Long id){
-        Optional<Nationality> nationality = nationalityRepository.findById(id);
+    @RequestMapping(path="/{nationality_id}", method= RequestMethod.GET)
+    public Nationality getNationalityById (@PathVariable("nationality_id") Long nationality_id){
+        Optional<Nationality> nationality = nationalityRepository.findById(nationality_id);
         return nationality.orElse(null);
     }
 

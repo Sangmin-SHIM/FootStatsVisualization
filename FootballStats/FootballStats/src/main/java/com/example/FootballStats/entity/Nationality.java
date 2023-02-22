@@ -1,7 +1,11 @@
 package com.example.FootballStats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @Table(name="nationality")
@@ -14,5 +18,10 @@ public class Nationality {
     private String name;
 
     private String name_short;
+
+    @OneToMany(mappedBy = "nationality",fetch=FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnoreProperties("nationality")
+    private List<Player> players;
 
 }

@@ -1,5 +1,6 @@
 package com.example.FootballStats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,5 +19,6 @@ public class Player {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nationality_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"players","hibernateLazyInitializer"})
     private Nationality nationality;
 }

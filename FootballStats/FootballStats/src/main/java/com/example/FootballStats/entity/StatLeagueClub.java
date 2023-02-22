@@ -6,8 +6,8 @@ import lombok.*;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-@Table(name="stat_league")
-public class StatLeague {
+@Table(name="stat_league_club")
+public class StatLeagueClub {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
