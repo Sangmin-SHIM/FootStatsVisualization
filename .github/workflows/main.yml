@@ -12,6 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3  
   build:
+    needs: [pull]
     runs-on: self-hosted
     steps:
     - name: cleaning package
