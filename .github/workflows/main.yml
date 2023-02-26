@@ -14,8 +14,10 @@ jobs:
   build:
     needs: [pull]
     runs-on: self-hosted
+    env:
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
     - name: cleaning package
-      run: cd FootballStats/FootballStats && mvn clean package
+      run: cd FootballStats/FootballStats && mvn -DDB_PASSWORD=${{ secrets.DB_PASSWORD }} clean package
     - name: restarting service
       run: sudo systemctl restart footballapi.service
