@@ -18,7 +18,7 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: Set up PostgreSQL environment variables
-      run: echo "\nspring.datasource.password=${{ secrets.DB_PASSWORD }}" >> FootballStats/FootballStats/src/main/resources/application-ovh.properties
+      run: echo -e "\nspring.datasource.password=${{ secrets.DB_PASSWORD }}" >> FootballStats/FootballStats/src/main/resources/application-ovh.properties
     - name: cleaning package
       run: cd FootballStats/FootballStats && mvn clean package
     - name: restarting service
