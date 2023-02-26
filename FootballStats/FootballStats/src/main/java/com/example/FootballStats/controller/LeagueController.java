@@ -21,7 +21,6 @@ public class LeagueController {
     @Autowired
     StatLeagueClubRepository statLeagueClubRepository;
 
-    @CrossOrigin
     @RequestMapping(path="", method= RequestMethod.GET)
     public List<League> getAllLeagues(){
         return (List<League>) leagueRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
