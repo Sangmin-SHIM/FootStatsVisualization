@@ -20,6 +20,6 @@ jobs:
     - name: Set up PostgreSQL environment variables
       run: echo "spring.datasource.password=${{ secrets.DB_PASSWORD }}" >> FootballStats/FootballStats/src/main/resources/application-ovh.properties
     - name: cleaning package
-      run: cd FootballStats/FootballStats && mvn -P ovh clean package
+      run: cd FootballStats/FootballStats && mvn clean package
     - name: restarting service
       run: sudo systemctl restart footballapi.service
