@@ -19,6 +19,7 @@ public class Nationality {
 
     private String name_short;
 
+    private String name_original;
     @OneToMany(mappedBy = "nationality",fetch=FetchType.LAZY)
     @JsonManagedReference
     @JsonIgnoreProperties("nationality")

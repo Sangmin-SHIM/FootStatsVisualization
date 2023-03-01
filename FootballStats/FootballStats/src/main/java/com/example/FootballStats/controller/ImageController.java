@@ -83,4 +83,16 @@ public class ImageController {
                 .contentType(MediaType.IMAGE_PNG)
                 .body(bytes);
     }
+
+    @RequestMapping(path="/nationalities/{nationality_name}", method = RequestMethod.GET,
+        produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getNationalityImage(@PathVariable("nationality_name") String nationality_name) throws IOException {
+        var imgFile = new ClassPathResource("images/nationalities/"+nationality_name+".png");
+        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(bytes);
+    }
 }
