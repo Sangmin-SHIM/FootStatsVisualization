@@ -75,7 +75,7 @@ public class ImageController {
     @RequestMapping(path="/nationalities/{nationality_name}", method = RequestMethod.GET,
         produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getNationalityImage(@PathVariable("nationality_name") String nationality_name) throws IOException {
-        var imgFile = new ClassPathResource("/home/ubuntu/images/nationalities/"+nationality_name+".png");
+        var imgFile = new ClassPathResource("/home/ubuntu/images/nationalities/"+nationality_name+".png",this.getClass().getClassLoader());
 
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 
