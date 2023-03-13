@@ -23,4 +23,8 @@ public class League {
     @JsonIgnoreProperties("league")
     private List<Club> clubs;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nationality_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"players","hibernateLazyInitializer"})
+    private Nationality nationality;
 }
