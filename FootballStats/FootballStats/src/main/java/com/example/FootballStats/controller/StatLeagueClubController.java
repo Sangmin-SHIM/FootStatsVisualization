@@ -1,5 +1,6 @@
 package com.example.FootballStats.controller;
 
+import com.example.FootballStats.aggregation.ILeaguesTotalCount;
 import com.example.FootballStats.entity.StatLeagueClub;
 import com.example.FootballStats.repo.StatLeagueClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,10 @@ public class StatLeagueClubController {
     public StatLeagueClub getStatLeagueById (@PathVariable("stat_league_club_id") Long stat_league_club_id){
         Optional<StatLeagueClub> statLeagueClub = statLeagueClubRepository.findById(stat_league_club_id);
         return statLeagueClub.orElse(null);
+    }
+
+    @RequestMapping(path="/total", method= RequestMethod.GET)
+    public List<ILeaguesTotalCount> getTotalCountOfLeagues (){
+        return statLeagueClubRepository.findTotalCountOfLeagues();
     }
 }
