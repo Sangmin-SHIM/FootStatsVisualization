@@ -1,5 +1,6 @@
 package com.example.FootballStats.controller;
 
+import com.example.FootballStats.aggregation.ILeaguesSeasonsCount;
 import com.example.FootballStats.aggregation.ILeaguesTotalCount;
 import com.example.FootballStats.entity.StatLeagueClub;
 import com.example.FootballStats.repo.StatLeagueClubRepository;
@@ -32,5 +33,10 @@ public class StatLeagueClubController {
     @RequestMapping(path="/total", method= RequestMethod.GET)
     public List<ILeaguesTotalCount> getTotalCountOfLeagues (){
         return statLeagueClubRepository.findTotalCountOfLeagues();
+    }
+
+    @RequestMapping(path="/totalbyseason", method= RequestMethod.GET)
+    public List<ILeaguesSeasonsCount> getTotalCountBySeasonOfLeagues (){
+        return statLeagueClubRepository.findCountBySeasonOfLeagues();
     }
 }
