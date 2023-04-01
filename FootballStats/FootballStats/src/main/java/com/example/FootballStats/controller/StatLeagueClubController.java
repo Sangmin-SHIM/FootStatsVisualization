@@ -36,7 +36,7 @@ public class StatLeagueClubController {
     }
 
     @RequestMapping(path="/totalbyseason", method= RequestMethod.GET)
-    public List<ILeaguesSeasonsCount> getTotalCountBySeasonOfLeagues (){
-        return statLeagueClubRepository.findCountBySeasonOfLeagues();
+    public List<ILeaguesSeasonsCount> getTotalCountBySeasonOfLeagues (@RequestParam("season") String season){
+        return statLeagueClubRepository.findCountBySeasonOfLeagues(season);
     }
 }

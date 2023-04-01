@@ -1,6 +1,7 @@
 package com.example.FootballStats.controller;
 
 
+import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.League;
 import com.example.FootballStats.entity.StatLeagueClub;
 import com.example.FootballStats.repo.LeagueRepository;
@@ -38,5 +39,11 @@ public class LeagueController {
     public List<StatLeagueClub> getLeagueAllStatsById (@PathVariable("league_id") Long league_id){
         Optional<League> league = leagueRepository.findById(league_id);
         return statLeagueClubRepository.findByLeague(league);
+    }
+
+    @RequestMapping(path="/{league_id}/stats/{season}", method= RequestMethod.GET)
+    public List<StatLeagueClub> getLeagueAllStatsByIdAndSeason (@PathVariable("league_id") Long league_id, @PathVariable("season") String season){
+        Optional<League> league = leagueRepository.findById(league_id);
+        return statLeagueClubRepository.findByLeagueAndSeason(league,season);
     }
 }
