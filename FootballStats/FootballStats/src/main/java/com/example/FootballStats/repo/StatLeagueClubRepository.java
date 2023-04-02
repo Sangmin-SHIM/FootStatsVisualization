@@ -35,7 +35,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                     	SUM(total_red_cards) as allredcards,
                     	ROUND(SUM(goals_per_match)/COUNT(*),2) as goalspermatch,
                     	ROUND(SUM(assists_per_match)/COUNT(*),2) as assistspermatch,
-                    	ROUND(SUM(yellow_cards_per_match)/COUNT(*),2) as yellowcardsper_match,
+                    	ROUND(SUM(yellow_cards_per_match)/COUNT(*),2) as yellowcardspermatch,
                     	ROUND(SUM(red_cards_per_match)/COUNT(*),2) as redcardspermatch	
                     FROM View_leagues_aggregated_data
                     GROUP BY name"""
