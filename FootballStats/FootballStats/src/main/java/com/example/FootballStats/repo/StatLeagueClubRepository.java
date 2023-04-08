@@ -37,7 +37,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                     	ROUND(SUM(assists_per_match)/COUNT(*),2) as assistspermatch,
                     	ROUND(SUM(yellow_cards_per_match)/COUNT(*),2) as yellowcardspermatch,
                     	ROUND(SUM(red_cards_per_match)/COUNT(*),2) as redcardspermatch	
-                    FROM View_leagues_aggregated_data
+                    FROM materialized_view_leagues_aggregated_data
                     GROUP BY name"""
             , nativeQuery = true)
     List<ILeaguesTotalCount> findTotalCountOfLeagues();
@@ -56,7 +56,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                             assists_per_match as assistspermatch,
                             yellow_cards_per_match as yellowcardspermatch,
                             red_cards_per_match as redcardspermatch
-                        FROM View_leagues_aggregated_data
+                        FROM materialized_view_leagues_aggregated_data
                           WHERE season LIKE :season
                     """, nativeQuery = true)
     List<ILeaguesSeasonsCount> findCountBySeasonOfLeagues(@Param("season")String season);
