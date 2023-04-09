@@ -1,4 +1,6 @@
 package com.example.FootballStats.repo;
+import com.example.FootballStats.aggregation.ILeagueAllTimeBestClub;
+import com.example.FootballStats.aggregation.ILeagueSeasonBestClub;
 import com.example.FootballStats.aggregation.ILeaguesSeasonsCount;
 import com.example.FootballStats.aggregation.ILeaguesTotalCount;
 import com.example.FootballStats.entity.Club;
@@ -24,6 +26,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
     List<StatLeagueClub> findByClubAndSeason(Optional<Club> club, String season);
     List<StatLeagueClub> findByLeagueAndSeason(Optional<League> league, String season);
 
+    // Total Count of Leagues : All Time Goals, Assists, Yellow Cards, Red Cards
     @Query(value=
             """
                     SELECT
@@ -42,6 +45,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
             , nativeQuery = true)
     List<ILeaguesTotalCount> findTotalCountOfLeagues();
 
+    // Total Count of Leagues in Season : Goals, Assists, Yellow Cards, Red Cards
     @Query(value=
             """
                        SELECT 
@@ -61,4 +65,31 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                     """, nativeQuery = true)
     List<ILeaguesSeasonsCount> findCountBySeasonOfLeagues(@Param("season")String season);
 
+    // All Time Best Clubs in 5 Leagues
+    @Query(value=
+            """
+                    SELECT
+                          leagueid,
+                          leaguename,
+                          clubid,
+                          clubname,
+                          rankaverage,
+                          nbwin
+                    FROM materialized_view_league_all_time_best_club_aggregated_data
+                    """, nativeQuery = true)
+    List<ILeagueAllTimeBestClub> findAllTimeBestClub();
+
+    // Best Club in 5 Leagues in a Season
+    @Query(value=
+            """
+                       SELECT 
+                            season,
+                            leaguename,
+                            leagueid,
+                            clubid,
+                            clubname
+                        FROM materialized_view_league_best_club_aggregated_data
+                          WHERE season LIKE :season
+                    """, nativeQuery = true)
+    List<ILeagueSeasonBestClub> findSeasonBestClub(@Param("season")String season);
 }
