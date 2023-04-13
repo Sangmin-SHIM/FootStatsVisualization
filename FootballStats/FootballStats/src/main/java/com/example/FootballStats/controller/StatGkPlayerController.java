@@ -1,5 +1,7 @@
 package com.example.FootballStats.controller;
 
+import com.example.FootballStats.aggregation.ILeagueAllTimeBestGoalkeeper;
+import com.example.FootballStats.aggregation.ILeagueSeasonBestGoalkeeper;
 import com.example.FootballStats.entity.StatGkPlayer;
 import com.example.FootballStats.repo.StatGkPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ public class StatGkPlayerController {
     @Autowired
     StatGkPlayerRepository statGkPlayerRepository;
 
+
     @RequestMapping(path="", method= RequestMethod.GET)
     public List<StatGkPlayer> getAllStatsGkPlayer(){
         return (List<StatGkPlayer>) statGkPlayerRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
@@ -26,5 +29,17 @@ public class StatGkPlayerController {
     public StatGkPlayer getStatGkPlayerById (@PathVariable("stat_gk_id") Long stat_gk_id){
         Optional<StatGkPlayer> statGkPlayer = statGkPlayerRepository.findById(stat_gk_id);
         return statGkPlayer.orElse(null);
+    }
+
+    // All Time Best Goalkeeper in 5 Leagues
+    @RequestMapping(path="/all_time_best_goalkeepers", method= RequestMethod.GET)
+    public List<ILeagueAllTimeBestGoalkeeper> getAllTimeBestGoalkeepers (){
+        return statGkPlayerRepository.findAllTimeBestGoalkeeper();
+    }
+
+    // Best Goalkeeper in 5 Leagues in a Season
+    @RequestMapping(path="/best_goalkeepers", method= RequestMethod.GET)
+    public List<ILeagueSeasonBestGoalkeeper> getBestGoalkeepers (@RequestParam(name="season", required = false) String season){
+        return statGkPlayerRepository.findSeasonBestGoalkeeper(season);
     }
 }

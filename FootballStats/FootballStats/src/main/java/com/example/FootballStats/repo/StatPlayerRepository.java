@@ -45,7 +45,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           total_goals as totalgoals,
                           goals_per_match as goalspermatch  
                     FROM materialized_view_league_best_striker_aggregated_data
-                    WHERE season LIKE :season
+                        WHERE (:season IS NULL OR season LIKE :season)
                     """, nativeQuery = true)
     List<ILeagueSeasonBestStriker> findSeasonBestStriker(@Param("season") String season);
 
@@ -80,37 +80,5 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                         WHERE (:season IS NULL OR season LIKE :season)
                     """, nativeQuery = true)
     List<ILeagueSeasonBestPlaymaker> findSeasonBestPlaymaker(@Param("season") String season);
-
-    // All Time Best Goalkeeper in 5 Leagues
-    @Query(value=
-            """
-                    SELECT
-                          leagueid,
-                          leaguename,
-                          playerid,
-                          playername,
-                          totalmatches,
-                          totalgoalsagainst,
-                          goalsagainstpermatches
-                    FROM materialized_view_league_all_time_best_goalkeeper_aggregated_data
-                    """, nativeQuery = true)
-    List<ILeagueAllTimeBestGoalkeeper> findAllTimeBestGoalkeeper();
-
-    // Best Goalkeeper in 5 Leagues in a Season
-    @Query(value=
-            """
-                    SELECT
-                          season,
-                          league_id as leagueid,
-                          league_name as leaguename,
-                          player_id as playerid,
-                          player_name as playername,
-                          total_games as totalgames,
-                          total_goal_against as totalgoalagainst,
-                          goal_against_per_match as goalagainstpermatch  
-                    FROM materialized_view_league_best_goalkeeper_aggregated_data
-                        WHERE (:season IS NULL OR season LIKE :season)
-                    """, nativeQuery = true)
-    List<ILeagueSeasonBestGoalkeeper> findSeasonBestGoalkeeper(@Param("season") String season);
 
 }

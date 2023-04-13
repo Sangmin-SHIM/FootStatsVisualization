@@ -53,15 +53,5 @@ public class StatPlayerController {
         return statPlayerRepository.findSeasonBestPlaymaker(season);
     }
 
-    // All Time Best Goalkeeper in 5 Leagues
-    @RequestMapping(path="/all_time_best_goalkeepers", method= RequestMethod.GET)
-    public List<ILeagueAllTimeBestGoalkeeper> getAllTimeBestGoalkeepers (){
-        return statPlayerRepository.findAllTimeBestGoalkeeper();
-    }
 
-    // Best Goalkeeper in 5 Leagues in a Season
-    @RequestMapping(path="/best_goalkeepers", method= RequestMethod.GET)
-    public List<ILeagueSeasonBestGoalkeeper> getBestGoalkeepers (@RequestParam(name="season", required = false) String season){
-        return statPlayerRepository.findSeasonBestGoalkeeper(season);
-    }
 }
