@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path="/statsleagueclub")
+@RequestMapping(path="/stats_league_club")
 public class StatLeagueClubController {
 
     @Autowired
@@ -39,20 +39,20 @@ public class StatLeagueClubController {
     }
 
     // Total Count of Leagues in Season : Goals, Assists, Yellow Cards, Red Cards
-    @RequestMapping(path="/totalbyseason", method= RequestMethod.GET)
-    public List<ILeaguesSeasonsCount> getTotalCountBySeasonOfLeagues (@RequestParam("season") String season){
+    @RequestMapping(path="/total_by_season", method= RequestMethod.GET)
+    public List<ILeaguesSeasonsCount> getTotalCountBySeasonOfLeagues (@RequestParam(name="season", required = false) String season){
         return statLeagueClubRepository.findCountBySeasonOfLeagues(season);
     }
 
     // All Time Best Club in 5 Leagues
-    @RequestMapping(path="/alltimebestclubs", method= RequestMethod.GET)
+    @RequestMapping(path="/all_time_best_clubs", method= RequestMethod.GET)
     public List<ILeagueAllTimeBestClub> getAllTimeBestClubs (){
         return statLeagueClubRepository.findAllTimeBestClub();
     }
 
     // Best Club in 5 Leagues in a Season
-    @RequestMapping(path="/bestclubs", method= RequestMethod.GET)
-    public List<ILeagueSeasonBestClub> getBestClubs (@RequestParam("season") String season){
+    @RequestMapping(path="/best_clubs", method= RequestMethod.GET)
+    public List<ILeagueSeasonBestClub> getBestClubs (@RequestParam(name="season", required = false) String season){
         return statLeagueClubRepository.findSeasonBestClub(season);
     }
 

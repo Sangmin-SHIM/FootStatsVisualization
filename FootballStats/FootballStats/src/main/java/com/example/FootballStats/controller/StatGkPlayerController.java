@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path="/statsgkplayer")
+@RequestMapping(path="/stats_gk_player")
 public class StatGkPlayerController {
 
     @Autowired

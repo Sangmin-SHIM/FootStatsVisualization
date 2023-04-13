@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path="/rankingsleague")
+@RequestMapping(path="/rankings_league")
 public class RankingLeagueController {
 
         @Autowired

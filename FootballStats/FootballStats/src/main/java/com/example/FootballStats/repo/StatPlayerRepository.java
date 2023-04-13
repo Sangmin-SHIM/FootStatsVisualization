@@ -77,7 +77,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           total_assists as totalassists,
                           assists_per_match as assistspermatch  
                     FROM materialized_view_league_best_playmaker_aggregated_data
-                    WHERE season LIKE :season
+                        WHERE (:season IS NULL OR season LIKE :season)
                     """, nativeQuery = true)
     List<ILeagueSeasonBestPlaymaker> findSeasonBestPlaymaker(@Param("season") String season);
 
@@ -109,7 +109,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           total_goal_against as totalgoalagainst,
                           goal_against_per_match as goalagainstpermatch  
                     FROM materialized_view_league_best_goalkeeper_aggregated_data
-                    WHERE season LIKE :season
+                        WHERE (:season IS NULL OR season LIKE :season)
                     """, nativeQuery = true)
     List<ILeagueSeasonBestGoalkeeper> findSeasonBestGoalkeeper(@Param("season") String season);
 

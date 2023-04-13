@@ -61,7 +61,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                             yellow_cards_per_match as yellowcardspermatch,
                             red_cards_per_match as redcardspermatch
                         FROM materialized_view_leagues_aggregated_data
-                          WHERE season LIKE :season
+                           WHERE (:season IS NULL OR season LIKE :season)
                     """, nativeQuery = true)
     List<ILeaguesSeasonsCount> findCountBySeasonOfLeagues(@Param("season")String season);
 
@@ -89,7 +89,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                             clubid,
                             clubname
                         FROM materialized_view_league_best_club_aggregated_data
-                          WHERE season LIKE :season
+                           WHERE (:season IS NULL OR season LIKE :season)
                     """, nativeQuery = true)
     List<ILeagueSeasonBestClub> findSeasonBestClub(@Param("season")String season);
 }
