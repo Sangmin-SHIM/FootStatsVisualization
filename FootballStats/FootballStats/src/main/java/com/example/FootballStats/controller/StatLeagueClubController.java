@@ -46,14 +46,14 @@ public class StatLeagueClubController {
 
     // All Time Best Club in 5 Leagues
     @RequestMapping(path="/all_time_best_clubs", method= RequestMethod.GET)
-    public List<ILeagueAllTimeBestClub> getAllTimeBestClubs (){
-        return statLeagueClubRepository.findAllTimeBestClub();
+    public List<ILeagueAllTimeBestClub> getAllTimeBestClubs (@RequestParam(name="league_id", required = false) Integer league_id){
+        return statLeagueClubRepository.findAllTimeBestClub(league_id);
     }
 
     // Best Club in 5 Leagues in a Season
     @RequestMapping(path="/best_clubs", method= RequestMethod.GET)
-    public List<ILeagueSeasonBestClub> getBestClubs (@RequestParam(name="season", required = false) String season){
-        return statLeagueClubRepository.findSeasonBestClub(season);
+    public List<ILeagueSeasonBestClub> getBestClubs (@RequestParam(name="season", required = false) String season, @RequestParam(name="league_id", required = false) Integer league_id){
+        return statLeagueClubRepository.findSeasonBestClub(season, league_id);
     }
 
 }

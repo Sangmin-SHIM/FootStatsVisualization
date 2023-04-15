@@ -76,8 +76,9 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                           rankaverage,
                           nbwin
                     FROM materialized_view_league_all_time_best_club_aggregated_data
+                         WHERE (:league_id IS NULL OR leagueid = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueAllTimeBestClub> findAllTimeBestClub();
+    List<ILeagueAllTimeBestClub> findAllTimeBestClub(@Param("league_id") Integer league_id);
 
     // Best Club in 5 Leagues in a Season
     @Query(value=
@@ -90,6 +91,7 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                             clubname
                         FROM materialized_view_league_best_club_aggregated_data
                            WHERE (:season IS NULL OR season LIKE :season)
+                           AND (:league_id IS NULL OR leagueid = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueSeasonBestClub> findSeasonBestClub(@Param("season")String season);
+    List<ILeagueSeasonBestClub> findSeasonBestClub(@Param("season")String season,@Param("league_id") Integer league_id);
 }

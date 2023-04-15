@@ -29,8 +29,9 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           totalgoals,
                           goalspermatches
                     FROM materialized_view_league_all_time_best_striker_aggregated_data
+                         WHERE (:league_id IS NULL OR leagueid = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueAllTimeBestStriker> findAllTimeBestStriker();
+    List<ILeagueAllTimeBestStriker> findAllTimeBestStriker(@Param("league_id") Integer league_id);
 
     // Best Striker in 5 Leagues in a Season
     @Query(value=
@@ -46,8 +47,9 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           goals_per_match as goalspermatch  
                     FROM materialized_view_league_best_striker_aggregated_data
                         WHERE (:season IS NULL OR season LIKE :season)
+                        AND (:league_id IS NULL OR league_id = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueSeasonBestStriker> findSeasonBestStriker(@Param("season") String season);
+    List<ILeagueSeasonBestStriker> findSeasonBestStriker(@Param("season") String season, @Param("league_id") Integer league_id);
 
     // All Time Best Playmaker in 5 Leagues
     @Query(value=
@@ -61,8 +63,9 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           totalassists,
                           assistspermatches
                     FROM materialized_view_league_all_time_best_playmaker_aggregated_data
+                     WHERE (:league_id IS NULL OR leagueid = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueAllTimeBestPlaymaker> findAllTimeBestPlaymaker();
+    List<ILeagueAllTimeBestPlaymaker> findAllTimeBestPlaymaker(@Param("league_id") Integer league_id);
 
     // Best Playmaker in 5 Leagues in a Season
     @Query(value=
@@ -78,7 +81,8 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           assists_per_match as assistspermatch  
                     FROM materialized_view_league_best_playmaker_aggregated_data
                         WHERE (:season IS NULL OR season LIKE :season)
+                        AND (:league_id IS NULL OR league_id = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueSeasonBestPlaymaker> findSeasonBestPlaymaker(@Param("season") String season);
+    List<ILeagueSeasonBestPlaymaker> findSeasonBestPlaymaker(@Param("season") String season, @Param("league_id") Integer league_id);
 
 }

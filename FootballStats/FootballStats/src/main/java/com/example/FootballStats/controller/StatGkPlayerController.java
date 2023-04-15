@@ -33,13 +33,13 @@ public class StatGkPlayerController {
 
     // All Time Best Goalkeeper in 5 Leagues
     @RequestMapping(path="/all_time_best_goalkeepers", method= RequestMethod.GET)
-    public List<ILeagueAllTimeBestGoalkeeper> getAllTimeBestGoalkeepers (){
-        return statGkPlayerRepository.findAllTimeBestGoalkeeper();
+    public List<ILeagueAllTimeBestGoalkeeper> getAllTimeBestGoalkeepers (@RequestParam(name="league_id", required = false) Integer league_id){
+        return statGkPlayerRepository.findAllTimeBestGoalkeeper(league_id);
     }
 
     // Best Goalkeeper in 5 Leagues in a Season
     @RequestMapping(path="/best_goalkeepers", method= RequestMethod.GET)
-    public List<ILeagueSeasonBestGoalkeeper> getBestGoalkeepers (@RequestParam(name="season", required = false) String season){
-        return statGkPlayerRepository.findSeasonBestGoalkeeper(season);
+    public List<ILeagueSeasonBestGoalkeeper> getBestGoalkeepers (@RequestParam(name="season", required = false) String season, @RequestParam(name="league_id", required = false) Integer league_id){
+        return statGkPlayerRepository.findSeasonBestGoalkeeper(season, league_id);
     }
 }

@@ -31,26 +31,26 @@ public class StatPlayerController {
 
     // All Time Best Goalkeeper in 5 Leagues
     @RequestMapping(path="/all_time_best_strikers", method= RequestMethod.GET)
-    public List<ILeagueAllTimeBestStriker> getAllTimeBestStrikers (){
-        return statPlayerRepository.findAllTimeBestStriker();
+    public List<ILeagueAllTimeBestStriker> getAllTimeBestStrikers (@RequestParam(name="league_id", required = false) Integer league_id){
+        return statPlayerRepository.findAllTimeBestStriker(league_id);
     }
 
     // Best Goalkeeper in 5 Leagues in a Season
     @RequestMapping(path="/best_strikers", method= RequestMethod.GET)
-    public List<ILeagueSeasonBestStriker> getBestStrikers (@RequestParam(name="season", required = false) String season){
-        return statPlayerRepository.findSeasonBestStriker(season);
+    public List<ILeagueSeasonBestStriker> getBestStrikers (@RequestParam(name="season", required = false) String season, @RequestParam(name="league_id", required = false) Integer league_id){
+        return statPlayerRepository.findSeasonBestStriker(season, league_id);
     }
 
     // All Time Best Playmaker in 5 Leagues
     @RequestMapping(path="/all_time_best_playmakers", method= RequestMethod.GET)
-    public List<ILeagueAllTimeBestPlaymaker> getAllTimeBestPlaymakers (){
-        return statPlayerRepository.findAllTimeBestPlaymaker();
+    public List<ILeagueAllTimeBestPlaymaker> getAllTimeBestPlaymakers (@RequestParam(name="league_id", required = false) Integer league_id){
+        return statPlayerRepository.findAllTimeBestPlaymaker(league_id);
     }
 
     // Best Playmaker in 5 Leagues in a Season
     @RequestMapping(path="/best_playmakers", method= RequestMethod.GET)
-    public List<ILeagueSeasonBestPlaymaker> getBestPlaymakers (@RequestParam(name="season", required = false) String season){
-        return statPlayerRepository.findSeasonBestPlaymaker(season);
+    public List<ILeagueSeasonBestPlaymaker> getBestPlaymakers (@RequestParam(name="season", required = false) String season, @RequestParam(name="league_id", required = false) Integer league_id){
+        return statPlayerRepository.findSeasonBestPlaymaker(season,league_id);
     }
 
 

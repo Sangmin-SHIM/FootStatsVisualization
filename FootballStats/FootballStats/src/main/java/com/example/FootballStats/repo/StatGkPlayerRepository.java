@@ -26,8 +26,9 @@ public interface StatGkPlayerRepository extends CrudRepository<StatGkPlayer, Lon
                           totalgoalsagainst,
                           goalsagainstpermatches
                     FROM materialized_view_league_all_time_best_goalkeeper_aggregated_data
+                        WHERE (:league_id IS NULL OR leagueid = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueAllTimeBestGoalkeeper> findAllTimeBestGoalkeeper();
+    List<ILeagueAllTimeBestGoalkeeper> findAllTimeBestGoalkeeper(@Param("league_id") Integer league_id);
 
     // Best Goalkeeper in 5 Leagues in a Season
     @Query(value=
@@ -43,6 +44,7 @@ public interface StatGkPlayerRepository extends CrudRepository<StatGkPlayer, Lon
                           goal_against_per_match as goalagainstpermatch  
                     FROM materialized_view_league_best_goalkeeper_aggregated_data
                         WHERE (:season IS NULL OR season LIKE :season)
+                        AND (:league_id IS NULL OR league_id = :league_id)
                     """, nativeQuery = true)
-    List<ILeagueSeasonBestGoalkeeper> findSeasonBestGoalkeeper(@Param("season") String season);
+    List<ILeagueSeasonBestGoalkeeper> findSeasonBestGoalkeeper(@Param("season") String season, @Param("league_id") Integer league_id);
 }
