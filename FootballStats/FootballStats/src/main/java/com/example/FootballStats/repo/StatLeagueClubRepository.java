@@ -1,8 +1,5 @@
 package com.example.FootballStats.repo;
-import com.example.FootballStats.aggregation.ILeagueAllTimeBestClub;
-import com.example.FootballStats.aggregation.ILeagueSeasonBestClub;
-import com.example.FootballStats.aggregation.ILeaguesSeasonsCount;
-import com.example.FootballStats.aggregation.ILeaguesTotalCount;
+import com.example.FootballStats.aggregation.*;
 import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.League;
 
@@ -94,4 +91,28 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                            AND (:league_id IS NULL OR leagueid = :league_id)
                     """, nativeQuery = true)
     List<ILeagueSeasonBestClub> findSeasonBestClub(@Param("season")String season,@Param("league_id") Integer league_id);
+
+    @Query(value= """
+                        SELECT
+                            season,
+                            league_id as leagueid,
+                            league_name as leaguename,
+                            nationality_name as nationalityname,
+                            nb_nationalities as nbnationalities
+                        FROM materialized_view_leagues_nationalities_by_season_aggregated_data
+                           WHERE (:season IS NULL OR season LIKE :season)
+                           AND (:league_id IS NULL OR league_id = :league_id)                        
+            """, nativeQuery = true)
+    List<ILeagueSeasonNationalitiesNumber> findSeasonNationalitiesNumber(@Param("season")String season,@Param("league_id") Integer league_id);
+
+    @Query(value= """
+                        SELECT
+                            league_id as leagueid,
+                            league_name as leaguename,
+                            nationality_name as nationalityname,
+                            nb_nationalities as nbnationalities
+                        FROM materialized_view_leagues_nationalities_aggregated_data
+                           WHERE (:league_id IS NULL OR league_id = :league_id)                        
+            """, nativeQuery = true)
+    List<ILeagueNationalitiesNumber> findNationalitiesNumber(@Param("league_id") Integer league_id);
 }
