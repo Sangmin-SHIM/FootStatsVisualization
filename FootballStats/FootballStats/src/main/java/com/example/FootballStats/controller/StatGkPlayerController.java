@@ -1,7 +1,9 @@
 package com.example.FootballStats.controller;
 
+import com.example.FootballStats.aggregation.IGkPlayersByClubCount;
 import com.example.FootballStats.aggregation.ILeagueAllTimeBestGoalkeeper;
 import com.example.FootballStats.aggregation.ILeagueSeasonBestGoalkeeper;
+import com.example.FootballStats.aggregation.IPlayersByClubCount;
 import com.example.FootballStats.entity.StatGkPlayer;
 import com.example.FootballStats.repo.StatGkPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +43,15 @@ public class StatGkPlayerController {
     @RequestMapping(path="/best_goalkeepers", method= RequestMethod.GET)
     public List<ILeagueSeasonBestGoalkeeper> getBestGoalkeepers (@RequestParam(name="season", required = false) String season, @RequestParam(name="league_id", required = false) Integer league_id){
         return statGkPlayerRepository.findSeasonBestGoalkeeper(season, league_id);
+    }
+
+    @RequestMapping(path="/total_gk_players_by_club", method= RequestMethod.GET)
+    public List<IGkPlayersByClubCount> getTotalCountOfGkPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id, @RequestParam(name="player_id", required = false) Integer player_id){
+        return statGkPlayerRepository.findTotalCountOfGkPlaysByClub(club_id, player_id);
+    }
+
+    @RequestMapping(path="/total_best_10_gk_players_by_club", method= RequestMethod.GET)
+    public List<IGkPlayersByClubCount> getBest10GoalkeepersByClub (@RequestParam(name="club_id") Integer club_id){
+        return statGkPlayerRepository.findTop10BestGoalkeepersByClub(club_id);
     }
 }

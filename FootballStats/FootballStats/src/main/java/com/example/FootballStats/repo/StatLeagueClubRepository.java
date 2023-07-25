@@ -115,4 +115,23 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                            WHERE (:league_id IS NULL OR league_id = :league_id)                        
             """, nativeQuery = true)
     List<ILeagueNationalitiesNumber> findNationalitiesNumber(@Param("league_id") Integer league_id);
+
+    @Query(value= """
+                        SELECT
+                            club_id as clubid,
+                            nb_seasons as nbseasons,
+                            avg_ranks as avgranks,
+                            club_name as clubname,
+                            all_goals as allgoals,
+                            all_assists as allassists,
+                            all_yellow_cards as allyellowcards,
+                            all_red_cards as allredcards,
+                            goals_per_season as goalsperseason,
+                            assists_per_season as assistsperseason,
+                            yellow_cards_per_season as yellowcardsperseason,
+                            red_cards_per_season as redcardsperseason
+                        FROM materialized_view_clubs_aggregated_data
+                           WHERE (:club_id IS NULL OR club_id = :club_id)                        
+            """, nativeQuery = true)
+    List<IClubsTotalCount> findTotalCountOfClubs(@Param("club_id") Integer club_id);
 }

@@ -53,5 +53,20 @@ public class StatPlayerController {
         return statPlayerRepository.findSeasonBestPlaymaker(season,league_id);
     }
 
+    @RequestMapping(path="/total_players_by_club", method= RequestMethod.GET)
+    public List<IPlayersByClubCount> getTotalCountOfPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id, @RequestParam(name="player_id", required = false) Integer player_id){
+        return statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id);
+    }
+
+    @RequestMapping(path="/total_best_10_strikers_by_club", method= RequestMethod.GET)
+    public List<IPlayersByClubCount> getBest10StrikersByClub (@RequestParam(name="club_id") Integer club_id){
+        return statPlayerRepository.findTop10BestStrikersByClub(club_id);
+    }
+
+    @RequestMapping(path="/total_best_10_playmakers_by_club", method= RequestMethod.GET)
+    public List<IPlayersByClubCount> getBest10PlaymakersByClub (@RequestParam(name="club_id") Integer club_id){
+        return statPlayerRepository.findTop10BestPlaymakersByClub(club_id);
+    }
+
 
 }

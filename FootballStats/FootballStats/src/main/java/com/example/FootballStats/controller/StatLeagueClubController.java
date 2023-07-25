@@ -68,11 +68,17 @@ public class StatLeagueClubController {
     }
 
 
-
-
     // ---------------------------------- //
     // END------ LEAGUE(S) DATA --------- //
     // ---------------------------------- //
+
+    // ---------------------------------- //
+    // --------- CLUB(S) DATA ----------- //
+    // ---------------------------------- //
+    @RequestMapping(path="/total_clubs", method= RequestMethod.GET)
+    public List<IClubsTotalCount> getTotalCountOfClubs (@RequestParam(name="club_id", required = false) Integer club_id){
+        return statLeagueClubRepository.findTotalCountOfClubs(club_id);
+    }
 
 }
 

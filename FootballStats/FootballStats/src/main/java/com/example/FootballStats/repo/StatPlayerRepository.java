@@ -85,4 +85,84 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     """, nativeQuery = true)
     List<ILeagueSeasonBestPlaymaker> findSeasonBestPlaymaker(@Param("season") String season, @Param("league_id") Integer league_id);
 
+    @Query(value=
+            """
+                    SELECT
+                          club_id as clubid,
+                          player_id as playerid,
+                          player_name as playername,
+                          player_position as playerposition,
+                          nationality_name as nationalityname,
+                          club_name as clubname,
+                          all_nb_games as allnbgames,
+                          all_goals as allgoals,
+                          all_assists as allassists,
+                          avg_minutes as avgminutes,
+                          all_yellow_cards as allyellowcards,
+                          all_red_cards as allredcards,
+                          goals_per_game as goalspergame,
+                          assists_per_game as assistspergame
+                    FROM materialized_view_players_by_club_aggregated_data
+                        WHERE (:player_id IS NULL OR player_id = :player_id)
+                        AND (:club_id IS NULL OR club_id = :club_id)
+                    """, nativeQuery = true)
+    List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id);
+
+    @Query(value=
+            """
+                    SELECT
+                    *
+                    FROM
+                    (
+                    SELECT
+                          club_id as clubid,
+                          player_id as playerid,
+                          player_name as playername,
+                          player_position as playerposition,
+                          nationality_name as nationalityname,
+                          club_name as clubname,
+                          all_nb_games as allnbgames,
+                          all_goals as allgoals,
+                          all_assists as allassists,
+                          avg_minutes as avgminutes,
+                          all_yellow_cards as allyellowcards,
+                          all_red_cards as allredcards,
+                          goals_per_game as goalspergame,
+                          assists_per_game as assistspergame
+                    FROM materialized_view_players_by_club_aggregated_data
+                        WHERE (:club_id IS NULL OR club_id = :club_id)
+                    ) as sub
+                    ORDER BY allgoals DESC
+                    LIMIT 10
+                    """, nativeQuery = true)
+    List<IPlayersByClubCount> findTop10BestStrikersByClub(@Param("club_id") Integer club_id);
+
+    @Query(value=
+            """
+                    SELECT
+                    *
+                    FROM
+                    (
+                    SELECT
+                          club_id as clubid,
+                          player_id as playerid,
+                          player_name as playername,
+                          player_position as playerposition,
+                          nationality_name as nationalityname,
+                          club_name as clubname,
+                          all_nb_games as allnbgames,
+                          all_goals as allgoals,
+                          all_assists as allassists,
+                          avg_minutes as avgminutes,
+                          all_yellow_cards as allyellowcards,
+                          all_red_cards as allredcards,
+                          goals_per_game as goalspergame,
+                          assists_per_game as assistspergame
+                    FROM materialized_view_players_by_club_aggregated_data
+                        WHERE (:club_id IS NULL OR club_id = :club_id)
+                    ) as sub
+                    ORDER BY allassists DESC
+                    LIMIT 10
+                    """, nativeQuery = true)
+    List<IPlayersByClubCount> findTop10BestPlaymakersByClub(@Param("club_id") Integer club_id);
 }
