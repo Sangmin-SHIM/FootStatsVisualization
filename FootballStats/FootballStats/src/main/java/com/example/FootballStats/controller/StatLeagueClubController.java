@@ -1,7 +1,9 @@
 package com.example.FootballStats.controller;
 
 import com.example.FootballStats.aggregation.*;
+import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.StatLeagueClub;
+import com.example.FootballStats.repo.ClubRepository;
 import com.example.FootballStats.repo.StatLeagueClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,6 +19,9 @@ public class StatLeagueClubController {
 
     @Autowired
     StatLeagueClubRepository statLeagueClubRepository;
+
+    @Autowired
+    ClubRepository clubRepository;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     public List<StatLeagueClub> getAllStatsLeague(){
@@ -80,5 +85,10 @@ public class StatLeagueClubController {
         return statLeagueClubRepository.findTotalCountOfClubs(club_id);
     }
 
+    @RequestMapping(path="/clubs", method= RequestMethod.GET)
+    public List<StatLeagueClub> getClubStats (@RequestParam(name="club_id") Long club_id){
+        Optional<Club> club = clubRepository.findById(club_id);
+        return statLeagueClubRepository.findByClub(club);
+    }
 }
 
