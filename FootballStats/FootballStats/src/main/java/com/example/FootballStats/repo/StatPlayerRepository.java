@@ -1,6 +1,7 @@
 package com.example.FootballStats.repo;
 
 import com.example.FootballStats.aggregation.*;
+import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatPlayer;
 import org.springframework.data.domain.Sort;
@@ -16,6 +17,9 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
     Iterable<StatPlayer> findAll(Sort id);
 
     List<StatPlayer> findByPlayer(Optional<Player> player);
+
+    List<StatPlayer> findByPlayerAndClubAndSeason(Optional<Player> player, Optional<Club> club,String season);
+    List<StatPlayer> findByPlayerAndClub(Optional<Player> player, Optional<Club> club);
 
     // All Time Best Striker in 5 Leagues
     @Query(value=

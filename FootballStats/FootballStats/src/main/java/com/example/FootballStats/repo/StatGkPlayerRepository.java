@@ -3,17 +3,26 @@ package com.example.FootballStats.repo;
 import com.example.FootballStats.aggregation.IGkPlayersByClubCount;
 import com.example.FootballStats.aggregation.ILeagueAllTimeBestGoalkeeper;
 import com.example.FootballStats.aggregation.ILeagueSeasonBestGoalkeeper;
+import com.example.FootballStats.entity.Club;
+import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatGkPlayer;
+import com.example.FootballStats.entity.StatPlayer;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StatGkPlayerRepository extends CrudRepository<StatGkPlayer, Long> {
 
     Iterable<StatGkPlayer> findAll(Sort id);
+
+    List<StatPlayer> findByPlayer(Optional<Player> player);
+
+    List<StatPlayer> findByPlayerAndClubAndSeason(Optional<Player> player, Optional<Club> club, String season);
+    List<StatPlayer> findByPlayerAndClub(Optional<Player> player, Optional<Club> club);
 
     // All Time Best Goalkeeper in 5 Leagues
     @Query(value=

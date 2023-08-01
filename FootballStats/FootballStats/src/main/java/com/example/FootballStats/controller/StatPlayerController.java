@@ -1,7 +1,11 @@
 package com.example.FootballStats.controller;
 
 import com.example.FootballStats.aggregation.*;
+import com.example.FootballStats.entity.Club;
+import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatPlayer;
+import com.example.FootballStats.repo.ClubRepository;
+import com.example.FootballStats.repo.PlayerRepository;
 import com.example.FootballStats.repo.StatPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,6 +21,12 @@ public class StatPlayerController {
 
     @Autowired
     StatPlayerRepository statPlayerRepository;
+
+    @Autowired
+    PlayerRepository playerRepository;
+
+    @Autowired
+    ClubRepository clubRepository;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     public List<StatPlayer> getAllStatsPlayer(){
@@ -68,5 +78,23 @@ public class StatPlayerController {
         return statPlayerRepository.findTop10BestPlaymakersByClub(club_id);
     }
 
+    @RequestMapping(path="/club_all_players_by_season", method = RequestMethod.GET)
+    public List<StatPlayer> getClubAllPlayersBySeason (@RequestParam(name="player_id") Integer player_id,
+                                                       @RequestParam(name="club_id") Integer club_id,
+                                                       @RequestParam(name="season", required = false) String season){
+        Optional<Player> player = playerRepository.findById(player_id);
+        Optional<Club> club = clubRepository.findById(club_id);
 
+        if (season != null) {
+            return statPlayerRepository.findByPlayerAndClubAndSeason(player,club,season);
+        } else {
+            return statPlayerRepository.findByPlayerAndClub(player,club);
+        }
+
+    }
+    @RequestMapping(path="/{player_id}/stats", method= RequestMethod.GET)
+    public List<StatPlayer> getPlayerAllStatsById (@PathVariable("player_id") Long player_id){
+        Optional<Player> player = playerRepository.findById(player_id);
+        return statPlayerRepository.findByPlayer(player);
+    }
 }

@@ -3,8 +3,12 @@ package com.example.FootballStats.controller;
 import com.example.FootballStats.aggregation.IGkPlayersByClubCount;
 import com.example.FootballStats.aggregation.ILeagueAllTimeBestGoalkeeper;
 import com.example.FootballStats.aggregation.ILeagueSeasonBestGoalkeeper;
-import com.example.FootballStats.aggregation.IPlayersByClubCount;
+import com.example.FootballStats.entity.Club;
+import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatGkPlayer;
+import com.example.FootballStats.entity.StatPlayer;
+import com.example.FootballStats.repo.ClubRepository;
+import com.example.FootballStats.repo.PlayerRepository;
 import com.example.FootballStats.repo.StatGkPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,6 +24,12 @@ public class StatGkPlayerController {
 
     @Autowired
     StatGkPlayerRepository statGkPlayerRepository;
+
+    @Autowired
+    PlayerRepository playerRepository;
+
+    @Autowired
+    ClubRepository clubRepository;
 
 
     @RequestMapping(path="", method= RequestMethod.GET)
@@ -53,5 +63,25 @@ public class StatGkPlayerController {
     @RequestMapping(path="/total_best_10_gk_players_by_club", method= RequestMethod.GET)
     public List<IGkPlayersByClubCount> getBest10GoalkeepersByClub (@RequestParam(name="club_id") Integer club_id){
         return statGkPlayerRepository.findTop10BestGoalkeepersByClub(club_id);
+    }
+
+    @RequestMapping(path="/club_all_players_by_season", method = RequestMethod.GET)
+    public List<StatPlayer> getClubAllGkPlayersBySeason (@RequestParam(name="player_id") Integer player_id,
+                                                       @RequestParam(name="club_id") Integer club_id,
+                                                       @RequestParam(name="season", required = false) String season){
+        Optional<Player> player = playerRepository.findById(player_id);
+        Optional<Club> club = clubRepository.findById(club_id);
+
+        if (season != null) {
+            return statGkPlayerRepository.findByPlayerAndClubAndSeason(player,club,season);
+        } else {
+            return statGkPlayerRepository.findByPlayerAndClub(player,club);
+        }
+
+    }
+    @RequestMapping(path="/{player_id}/stats", method= RequestMethod.GET)
+    public List<StatPlayer> getGkPlayerAllStatsById (@PathVariable("player_id") Long player_id){
+        Optional<Player> player = playerRepository.findById(player_id);
+        return statGkPlayerRepository.findByPlayer(player);
     }
 }

@@ -36,9 +36,4 @@ public class PlayerController {
         return player.orElse(null);
     }
 
-    @RequestMapping(path="/{player_id}/stats", method= RequestMethod.GET)
-    public List<StatPlayer> getPlayerAllStatsById (@PathVariable("player_id") Long player_id){
-        Optional<Player> player = playerRepository.findById(player_id);
-        return statPlayerRepository.findByPlayer(player);
-    }
 }
