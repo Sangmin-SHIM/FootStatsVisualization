@@ -66,21 +66,19 @@ public class StatGkPlayerController {
     }
 
     @RequestMapping(path="/club_all_players_by_season", method = RequestMethod.GET)
-    public List<StatPlayer> getClubAllGkPlayersBySeason (@RequestParam(name="player_id") Integer player_id,
-                                                       @RequestParam(name="club_id") Integer club_id,
+    public List<StatGkPlayer> getClubAllGkPlayersBySeason (@RequestParam(name="club_id") Integer club_id,
                                                        @RequestParam(name="season", required = false) String season){
-        Optional<Player> player = playerRepository.findById(player_id);
         Optional<Club> club = clubRepository.findById(club_id);
 
         if (season != null) {
-            return statGkPlayerRepository.findByPlayerAndClubAndSeason(player,club,season);
+            return statGkPlayerRepository.findGkPlayerByClubAndSeason(club,season);
         } else {
-            return statGkPlayerRepository.findByPlayerAndClub(player,club);
+            return statGkPlayerRepository.findGkPlayerByClub(club);
         }
 
     }
     @RequestMapping(path="/{player_id}/stats", method= RequestMethod.GET)
-    public List<StatPlayer> getGkPlayerAllStatsById (@PathVariable("player_id") Long player_id){
+    public List<StatGkPlayer> getGkPlayerAllStatsById (@PathVariable("player_id") Long player_id){
         Optional<Player> player = playerRepository.findById(player_id);
         return statGkPlayerRepository.findByPlayer(player);
     }

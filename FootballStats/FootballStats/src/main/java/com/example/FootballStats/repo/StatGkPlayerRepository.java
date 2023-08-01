@@ -19,10 +19,10 @@ public interface StatGkPlayerRepository extends CrudRepository<StatGkPlayer, Lon
 
     Iterable<StatGkPlayer> findAll(Sort id);
 
-    List<StatPlayer> findByPlayer(Optional<Player> player);
+    List<StatGkPlayer> findByPlayer(Optional<Player> player);
 
-    List<StatPlayer> findByPlayerAndClubAndSeason(Optional<Player> player, Optional<Club> club, String season);
-    List<StatPlayer> findByPlayerAndClub(Optional<Player> player, Optional<Club> club);
+    List<StatGkPlayer> findGkPlayerByClubAndSeason(Optional<Club> club, String season);
+    List<StatGkPlayer> findGkPlayerByClub(Optional<Club> club);
 
     // All Time Best Goalkeeper in 5 Leagues
     @Query(value=

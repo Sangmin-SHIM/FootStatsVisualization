@@ -18,8 +18,8 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
 
     List<StatPlayer> findByPlayer(Optional<Player> player);
 
-    List<StatPlayer> findByPlayerAndClubAndSeason(Optional<Player> player, Optional<Club> club,String season);
-    List<StatPlayer> findByPlayerAndClub(Optional<Player> player, Optional<Club> club);
+    List<StatPlayer> findPlayersByClubAndSeason(Optional<Club> club,String season);
+    List<StatPlayer> findPlayersByClub(Optional<Club> club);
 
     // All Time Best Striker in 5 Leagues
     @Query(value=

@@ -78,17 +78,15 @@ public class StatPlayerController {
         return statPlayerRepository.findTop10BestPlaymakersByClub(club_id);
     }
 
-    @RequestMapping(path="/club_all_players_by_season", method = RequestMethod.GET)
-    public List<StatPlayer> getClubAllPlayersBySeason (@RequestParam(name="player_id") Integer player_id,
-                                                       @RequestParam(name="club_id") Integer club_id,
+    @RequestMapping(path= "/club_all_players", method = RequestMethod.GET)
+    public List<StatPlayer> getClubAllPlayersBySeason (@RequestParam(name="club_id") Integer club_id,
                                                        @RequestParam(name="season", required = false) String season){
-        Optional<Player> player = playerRepository.findById(player_id);
         Optional<Club> club = clubRepository.findById(club_id);
 
         if (season != null) {
-            return statPlayerRepository.findByPlayerAndClubAndSeason(player,club,season);
+            return statPlayerRepository.findPlayersByClubAndSeason(club,season);
         } else {
-            return statPlayerRepository.findByPlayerAndClub(player,club);
+            return statPlayerRepository.findPlayersByClub(club);
         }
 
     }
