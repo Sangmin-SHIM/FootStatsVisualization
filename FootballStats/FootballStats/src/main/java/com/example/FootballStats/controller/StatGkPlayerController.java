@@ -57,7 +57,7 @@ public class StatGkPlayerController {
 
     @RequestMapping(path="/total_gk_players_by_club", method= RequestMethod.GET)
     public List<IGkPlayersByClubCount> getTotalCountOfGkPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id, @RequestParam(name="player_id", required = false) Integer player_id){
-        return statGkPlayerRepository.findTotalCountOfGkPlaysByClub(club_id, player_id);
+        return statGkPlayerRepository.findTotalCountOfGkPlayersByClub(club_id, player_id);
     }
 
     @RequestMapping(path="/total_best_10_gk_players_by_club", method= RequestMethod.GET)

@@ -82,7 +82,7 @@ public interface StatGkPlayerRepository extends CrudRepository<StatGkPlayer, Lon
                         WHERE (:player_id IS NULL OR player_id = :player_id)
                         AND (:club_id IS NULL OR club_id = :club_id)
                     """, nativeQuery = true)
-    List<IGkPlayersByClubCount> findTotalCountOfGkPlaysByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id);
+    List<IGkPlayersByClubCount> findTotalCountOfGkPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id);
 
     @Query(value=
             """     
