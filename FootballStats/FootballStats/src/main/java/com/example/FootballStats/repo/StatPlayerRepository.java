@@ -109,6 +109,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     FROM materialized_view_players_by_club_aggregated_data
                         WHERE (:player_id IS NULL OR player_id = :player_id)
                         AND (:club_id IS NULL OR club_id = :club_id)
+                        AND player_position NOT LIKE 'GK'
                     """, nativeQuery = true)
     List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id);
 
