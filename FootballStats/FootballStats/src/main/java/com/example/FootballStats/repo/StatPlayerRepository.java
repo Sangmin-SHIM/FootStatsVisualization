@@ -4,6 +4,7 @@ import com.example.FootballStats.aggregation.*;
 import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatPlayer;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -111,7 +112,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                         AND (:club_id IS NULL OR club_id = :club_id)
                         AND player_position NOT LIKE 'GK'
                     """, nativeQuery = true)
-    List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id);
+    List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id, Pageable pageable);
 
     @Query(value=
             """
