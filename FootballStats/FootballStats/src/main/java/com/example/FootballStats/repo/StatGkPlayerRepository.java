@@ -6,8 +6,6 @@ import com.example.FootballStats.aggregation.ILeagueSeasonBestGoalkeeper;
 import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatGkPlayer;
-import com.example.FootballStats.entity.StatPlayer;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -83,7 +81,7 @@ public interface StatGkPlayerRepository extends CrudRepository<StatGkPlayer, Lon
                         WHERE (:player_id IS NULL OR player_id = :player_id)
                         AND (:club_id IS NULL OR club_id = :club_id)
                     """, nativeQuery = true)
-    List<IGkPlayersByClubCount> findTotalCountOfGkPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id, Pageable pageable);
+    List<IGkPlayersByClubCount> findTotalCountOfGkPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id);
 
     @Query(value=
             """     

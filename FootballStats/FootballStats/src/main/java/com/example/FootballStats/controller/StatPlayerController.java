@@ -4,10 +4,12 @@ import com.example.FootballStats.aggregation.*;
 import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatPlayer;
+import com.example.FootballStats.player.PlayersByClubCount;
 import com.example.FootballStats.repo.ClubRepository;
 import com.example.FootballStats.repo.PlayerRepository;
 import com.example.FootballStats.repo.StatPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -66,12 +68,22 @@ public class StatPlayerController {
     }
 
     @RequestMapping(path="/total_players_by_club", method= RequestMethod.GET)
-    public List<IPlayersByClubCount> getTotalCountOfPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id,
-                                                                   @RequestParam(name="player_id", required = false) Integer player_id,
-                                                                   @RequestParam(name="page", defaultValue = "0") Integer pageNumber,
-                                                                   @RequestParam(name="size", defaultValue = "16") Integer pageSize){
+    public PlayersByClubCount getTotalCountOfPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id,
+                                                                  @RequestParam(name="player_id", required = false) Integer player_id,
+                                                                  @RequestParam(name="page", defaultValue = "0") Integer pageNumber,
+                                                                  @RequestParam(name="size", defaultValue = "16") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("allnbgames").descending());
-        return statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id, pageable);
+        // Fetch the list of players
+        List<IPlayersByClubCount> countOfPlayersByClubPerPage = statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id, pageable);
+        List<IPlayersByClubCount> totalCountOfPlayersByClub = statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id);
+
+        // Calculate the length of the list
+        long total_count = totalCountOfPlayersByClub.size();
+
+        // Create an instance of PlayersByClubData
+        PlayersByClubCount playersByClubCount = new PlayersByClubCount(countOfPlayersByClubPerPage, total_count);
+
+        return playersByClubCount;
     }
 
     @RequestMapping(path="/total_best_10_strikers_by_club", method= RequestMethod.GET)

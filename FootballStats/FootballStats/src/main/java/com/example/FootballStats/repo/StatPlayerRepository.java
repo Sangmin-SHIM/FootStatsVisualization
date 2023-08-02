@@ -4,6 +4,8 @@ import com.example.FootballStats.aggregation.*;
 import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatPlayer;
+import com.example.FootballStats.player.PlayersByClubCount;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
@@ -113,6 +115,30 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                         AND player_position NOT LIKE 'GK'
                     """, nativeQuery = true)
     List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id, Pageable pageable);
+
+    @Query(value=
+            """
+                    SELECT
+                          club_id as clubid,
+                          player_id as playerid,
+                          player_name as playername,
+                          player_position as playerposition,
+                          nationality_name as nationalityname,
+                          club_name as clubname,
+                          all_nb_games as allnbgames,
+                          all_goals as allgoals,
+                          all_assists as allassists,
+                          ROUND(avg_minutes,1) as avgminutes,
+                          all_yellow_cards as allyellowcards,
+                          all_red_cards as allredcards,
+                          goals_per_game as goalspergame,
+                          assists_per_game as assistspergame
+                    FROM materialized_view_players_by_club_aggregated_data
+                        WHERE (:player_id IS NULL OR player_id = :player_id)
+                        AND (:club_id IS NULL OR club_id = :club_id)
+                        AND player_position NOT LIKE 'GK'
+                    """, nativeQuery = true)
+    List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id);
 
     @Query(value=
             """
