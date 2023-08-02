@@ -11,6 +11,8 @@ import com.example.FootballStats.repo.ClubRepository;
 import com.example.FootballStats.repo.PlayerRepository;
 import com.example.FootballStats.repo.StatGkPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,8 +58,12 @@ public class StatGkPlayerController {
     }
 
     @RequestMapping(path="/total_gk_players_by_club", method= RequestMethod.GET)
-    public List<IGkPlayersByClubCount> getTotalCountOfGkPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id, @RequestParam(name="player_id", required = false) Integer player_id){
-        return statGkPlayerRepository.findTotalCountOfGkPlayersByClub(club_id, player_id);
+    public List<IGkPlayersByClubCount> getTotalCountOfGkPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id,
+                                                                       @RequestParam(name="player_id", required = false) Integer player_id,
+                                                                       @RequestParam(name="page", defaultValue = "0") Integer pageNumber,
+                                                                       @RequestParam(name="size", defaultValue = "4") Integer pageSize){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("allnbGames").descending());
+        return statGkPlayerRepository.findTotalCountOfGkPlayersByClub(club_id, player_id, pageable);
     }
 
     @RequestMapping(path="/total_best_10_gk_players_by_club", method= RequestMethod.GET)

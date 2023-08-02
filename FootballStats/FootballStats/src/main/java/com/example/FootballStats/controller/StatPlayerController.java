@@ -69,7 +69,7 @@ public class StatPlayerController {
     public List<IPlayersByClubCount> getTotalCountOfPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id,
                                                                    @RequestParam(name="player_id", required = false) Integer player_id,
                                                                    @RequestParam(name="page", defaultValue = "0") Integer pageNumber,
-                                                                   @RequestParam(name="size", defaultValue = "20") Integer pageSize){
+                                                                   @RequestParam(name="size", defaultValue = "16") Integer pageSize){
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("allnbgames").descending());
         return statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id, pageable);
     }
