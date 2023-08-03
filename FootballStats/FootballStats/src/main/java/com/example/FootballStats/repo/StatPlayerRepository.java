@@ -4,8 +4,6 @@ import com.example.FootballStats.aggregation.*;
 import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatPlayer;
-import com.example.FootballStats.player.PlayersByClubCount;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +19,42 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
 
     List<StatPlayer> findByPlayer(Optional<Player> player);
 
-    List<StatPlayer> findPlayersByClubAndSeason(Optional<Club> club,String season);
-    List<StatPlayer> findPlayersByClub(Optional<Club> club);
+    @Query(""" 
+            SELECT st FROM StatPlayer st 
+            
+            WHERE (:club IS NULL OR st.club = :club) 
+                AND st.season = :season 
+                AND (:player_position IS NULL OR st.player.position LIKE :player_position)
+                AND (:player_name IS NULL OR st.player.name LIKE '%' || :player_name || '%')
+                AND (:nationality_name IS NULL OR st.player.nationality.name_original LIKE :nationality_name)
+                AND st.player.position NOT LIKE 'GK'     
+
+        
+            """)
+    List<StatPlayer> findPlayersByClubAndSeason(Optional<Club> club,
+                                                @Param("season") String season,
+                                                @Param("player_position") String player_position,
+                                                @Param("player_name") String player_name,
+                                                @Param("nationality_name") String nationality_name,
+                                                Sort sort
+                                                );
+
+    @Query(""" 
+            SELECT st FROM StatPlayer st 
+            
+            WHERE (:club IS NULL OR st.club = :club)  
+                AND (:player_position IS NULL OR st.player.position LIKE :player_position)
+                AND (:player_name IS NULL OR st.player.name LIKE '%' || :player_name || '%')
+                AND (:nationality_name IS NULL OR st.player.nationality.name_original LIKE :nationality_name)
+                AND st.player.position NOT LIKE 'GK'     
+
+        
+            """)
+    List<StatPlayer> findPlayersByClub(Optional<Club> club,
+                                       @Param("player_position") String player_position,
+                                       @Param("player_name") String player_name,
+                                       @Param("nationality_name") String nationality_name,
+                                       Sort sort);
 
     // All Time Best Striker in 5 Leagues
     @Query(value=
@@ -111,10 +143,29 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           assists_per_game as assistspergame
                     FROM materialized_view_players_by_club_aggregated_data
                         WHERE (:player_id IS NULL OR player_id = :player_id)
-                        AND (:club_id IS NULL OR club_id = :club_id)
-                        AND player_position NOT LIKE 'GK'
+                            AND (:club_id IS NULL OR club_id = :club_id)
+                            AND (:player_name IS NULL OR player_name LIKE :player_name)
+                            AND (:player_position IS NULL OR player_position LIKE '%' || :player_position || '%')
+                            AND (:nationality_name IS NULL OR nationality_name LIKE :nationality_name)
+                            AND player_position NOT LIKE 'GK'
+                        ORDER BY
+                            CASE
+                                WHEN :sort_field = 'player_name' THEN 'player_name'
+                                WHEN :sort_field = 'nationality_name' THEN 'nationality_name'
+                                WHEN :sort_field = 'all_nb_games' THEN 'all_nb_games'
+                                WHEN :sort_field = 'all_goals' THEN 'all_goals'
+                                WHEN :sort_field = 'all_assists' THEN 'all_assists'
+                                WHEN :sort_field = 'all_yellow_cards' THEN 'all_yellow_cards'
+                                WHEN :sort_field = 'all_red_cards' THEN 'all_red_cards'
+                            END    
                     """, nativeQuery = true)
-    List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id, @Param("player_id") Integer player_id, Pageable pageable);
+    List<IPlayersByClubCount> findTotalCountOfPlayersByClub(@Param("club_id") Integer club_id,
+                                                            @Param("player_id") Integer player_id,
+                                                            @Param("player_name") String player_name,
+                                                            @Param("player_position") String player_position,
+                                                            @Param("nationality_name") String nationality_name,
+                                                            @Param("sort_field") String sort_field,
+                                                            Pageable pageable);
 
     @Query(value=
             """

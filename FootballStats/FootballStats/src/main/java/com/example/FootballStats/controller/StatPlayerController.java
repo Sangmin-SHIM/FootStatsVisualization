@@ -9,7 +9,6 @@ import com.example.FootballStats.repo.ClubRepository;
 import com.example.FootballStats.repo.PlayerRepository;
 import com.example.FootballStats.repo.StatPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -70,11 +69,25 @@ public class StatPlayerController {
     @RequestMapping(path="/total_players_by_club", method= RequestMethod.GET)
     public PlayersByClubCount getTotalCountOfPlayersByClub (@RequestParam(name="club_id", required = false) Integer club_id,
                                                                   @RequestParam(name="player_id", required = false) Integer player_id,
+                                                                  @RequestParam(name="player_name", required = false) String player_name,
+                                                                  @RequestParam(name="player_position", required = false) String player_position,
+                                                                  @RequestParam(name="nationality_name", required = false) String nationality_name,
+                                                                  @RequestParam(name="sort_field", defaultValue = "all_nb_games") String sort_field,
+
+                                                                  @RequestParam(name="sort_order", defaultValue = "asc") String sort_order,
                                                                   @RequestParam(name="page", defaultValue = "0") Integer pageNumber,
                                                                   @RequestParam(name="size", defaultValue = "16") Integer pageSize){
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("allnbgames").descending());
+
+        Pageable pageable;
+        if (sort_order.equals("desc")) {
+            Sort sort = Sort.by(Sort.Order.desc(sort_field));
+            pageable = PageRequest.of(pageNumber, pageSize, sort);
+        } else {
+            Sort sort = Sort.by(Sort.Order.asc(sort_field));
+            pageable = PageRequest.of(pageNumber, pageSize, sort);
+        }
         // Fetch the list of players
-        List<IPlayersByClubCount> countOfPlayersByClubPerPage = statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id, pageable);
+        List<IPlayersByClubCount> countOfPlayersByClubPerPage = statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id, player_name, player_position, nationality_name, sort_field, pageable);
         List<IPlayersByClubCount> totalCountOfPlayersByClub = statPlayerRepository.findTotalCountOfPlayersByClub(club_id, player_id);
 
         // Calculate the length of the list
@@ -98,13 +111,27 @@ public class StatPlayerController {
 
     @RequestMapping(path= "/club_all_players", method = RequestMethod.GET)
     public List<StatPlayer> getClubAllPlayersBySeason (@RequestParam(name="club_id") Integer club_id,
-                                                       @RequestParam(name="season", required = false) String season){
+                                                       @RequestParam(name="season", required = false) String season,
+                                                       @RequestParam(name="player_position", required = false) String player_position,
+                                                       @RequestParam(name="player_name", required = false) String player_name,
+                                                       @RequestParam(name="nationality_name", required = false) String nationality_name,
+                                                       @RequestParam(name="sort_field", required = false, defaultValue = "player.name") String sort_field,
+                                                       @RequestParam(name="sort_order", defaultValue = "asc") String sort_order
+                                                        ){
+
         Optional<Club> club = clubRepository.findById(club_id);
 
-        if (season != null) {
-            return statPlayerRepository.findPlayersByClubAndSeason(club,season);
+        Sort sort;
+        if (sort_order.equals("asc")){
+            sort = Sort.by(Sort.Order.asc(sort_field));
         } else {
-            return statPlayerRepository.findPlayersByClub(club);
+            sort = Sort.by(Sort.Order.desc(sort_field));
+        }
+
+        if (season != null) {
+            return statPlayerRepository.findPlayersByClubAndSeason(club,season, player_position, player_name, nationality_name,sort);
+        } else {
+            return statPlayerRepository.findPlayersByClub(club, player_position, player_name, nationality_name, sort);
         }
 
     }
