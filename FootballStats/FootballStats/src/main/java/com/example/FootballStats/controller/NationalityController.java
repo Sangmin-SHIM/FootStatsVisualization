@@ -1,5 +1,7 @@
 package com.example.FootballStats.controller;
 
+import com.example.FootballStats.aggregation.IPlayersByClubCount;
+import com.example.FootballStats.customization.NationalityNameByClub;
 import com.example.FootballStats.entity.League;
 import com.example.FootballStats.entity.Nationality;
 import com.example.FootballStats.repo.NationalityRepository;
@@ -27,6 +29,11 @@ public class NationalityController {
     public Nationality getNationalityById (@PathVariable("nationality_id") Long nationality_id){
         Optional<Nationality> nationality = nationalityRepository.findById(nationality_id);
         return nationality.orElse(null);
+    }
+
+    @RequestMapping(path="/clubs", method= RequestMethod.GET)
+    public List<NationalityNameByClub> getTotalNationalitiesByClub(@RequestParam("club_id") Integer club_id){
+        return nationalityRepository.findTotalNationalitiesByClub(club_id);
     }
 
 }

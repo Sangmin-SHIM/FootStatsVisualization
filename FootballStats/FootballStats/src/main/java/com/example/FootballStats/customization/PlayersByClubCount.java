@@ -1,4 +1,4 @@
-package com.example.FootballStats.player;
+package com.example.FootballStats.customization;
 
 import com.example.FootballStats.aggregation.IPlayersByClubCount;
 import lombok.*;

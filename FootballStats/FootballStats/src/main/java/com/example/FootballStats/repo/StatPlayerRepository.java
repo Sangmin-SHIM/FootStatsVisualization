@@ -56,7 +56,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                                        @Param("nationality_name") String nationality_name,
                                        Sort sort);
 
-    // All Time Best Striker in 5 Leagues
+    // All-Time Best Striker in 5 Leagues
     @Query(value=
             """
                     SELECT
@@ -90,7 +90,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     """, nativeQuery = true)
     List<ILeagueSeasonBestStriker> findSeasonBestStriker(@Param("season") String season, @Param("league_id") Integer league_id);
 
-    // All Time Best Playmaker in 5 Leagues
+    // All-Time Best Playmaker in 5 Leagues
     @Query(value=
             """
                     SELECT
@@ -144,7 +144,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     FROM materialized_view_players_by_club_aggregated_data
                         WHERE (:player_id IS NULL OR player_id = :player_id)
                             AND (:club_id IS NULL OR club_id = :club_id)
-                            AND (:player_name IS NULL OR player_name LIKE :player_name)
+                            AND (:player_name IS NULL OR player_name LIKE '%' || :player_name || '%')
                             AND (:player_position IS NULL OR player_position LIKE '%' || :player_position || '%')
                             AND (:nationality_name IS NULL OR nationality_name LIKE :nationality_name)
                             AND player_position NOT LIKE 'GK'

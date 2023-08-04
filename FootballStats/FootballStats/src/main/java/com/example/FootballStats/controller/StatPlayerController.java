@@ -4,7 +4,7 @@ import com.example.FootballStats.aggregation.*;
 import com.example.FootballStats.entity.Club;
 import com.example.FootballStats.entity.Player;
 import com.example.FootballStats.entity.StatPlayer;
-import com.example.FootballStats.player.PlayersByClubCount;
+import com.example.FootballStats.customization.PlayersByClubCount;
 import com.example.FootballStats.repo.ClubRepository;
 import com.example.FootballStats.repo.PlayerRepository;
 import com.example.FootballStats.repo.StatPlayerRepository;
