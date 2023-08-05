@@ -24,8 +24,8 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
             
             WHERE (:club IS NULL OR st.club = :club) 
                 AND st.season = :season 
-                AND (:player_position IS NULL OR st.player.position LIKE :player_position)
-                AND (:player_name IS NULL OR st.player.name LIKE '%' || :player_name || '%')
+                AND (:player_position IS NULL OR st.player.position LIKE '%' || :player_position || '%')
+                AND (:player_name IS NULL OR lower(st.player.name) LIKE lower(concat('%', :player_name, '%')))
                 AND (:nationality_name IS NULL OR st.player.nationality.name_original LIKE :nationality_name)
                 AND st.player.position NOT LIKE 'GK'     
 
@@ -43,8 +43,8 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
             SELECT st FROM StatPlayer st 
             
             WHERE (:club IS NULL OR st.club = :club)  
-                AND (:player_position IS NULL OR st.player.position LIKE :player_position)
-                AND (:player_name IS NULL OR st.player.name LIKE '%' || :player_name || '%')
+                AND (:player_position IS NULL OR st.player.position LIKE '%' || :player_position || '%')
+                AND (:player_name IS NULL OR lower(st.player.name) LIKE lower(concat('%', :player_name, '%')))
                 AND (:nationality_name IS NULL OR st.player.nationality.name_original LIKE :nationality_name)
                 AND st.player.position NOT LIKE 'GK'     
 
@@ -144,7 +144,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     FROM materialized_view_players_by_club_aggregated_data
                         WHERE (:player_id IS NULL OR player_id = :player_id)
                             AND (:club_id IS NULL OR club_id = :club_id)
-                            AND (:player_name IS NULL OR player_name LIKE '%' || :player_name || '%')
+                            AND (:player_name IS NULL OR LOWER(player_name) LIKE '%' || LOWER(:player_name) || '%')
                             AND (:player_position IS NULL OR player_position LIKE '%' || :player_position || '%')
                             AND (:nationality_name IS NULL OR nationality_name LIKE :nationality_name)
                             AND player_position NOT LIKE 'GK'
