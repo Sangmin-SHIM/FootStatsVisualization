@@ -1,9 +1,5 @@
 package com.example.FootballStats.controller;
 
-import com.example.FootballStats.aggregation.IPlayersByClubCount;
-import com.example.FootballStats.customization.NationalityNameByClub;
-import com.example.FootballStats.customization.NationalityNameByClubAndSeason;
-import com.example.FootballStats.entity.League;
 import com.example.FootballStats.entity.Nationality;
 import com.example.FootballStats.repo.NationalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +28,5 @@ public class NationalityController {
         return nationality.orElse(null);
     }
 
-    @RequestMapping(path="/clubs", method= RequestMethod.GET)
-    public List<NationalityNameByClub> getTotalNationalitiesByClub(@RequestParam("club_id") Integer club_id){
-        return nationalityRepository.findTotalNationalitiesByClub(club_id);
-    }
-
-    @RequestMapping(path="/clubs_season", method= RequestMethod.GET)
-    public List<NationalityNameByClubAndSeason> getTotalNationalitiesByClubAndSeason(@RequestParam("club_id") Integer club_id,
-                                                                                     @RequestParam("season") String season){
-        return nationalityRepository.findNationalitiesByClubAndSeason(club_id,season);
-    }
 
 }
