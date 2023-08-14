@@ -5,7 +5,7 @@ public interface ILeagueAllTimeBestClub {
     Integer getLeagueId();
     String getClubName();
     Integer getClubId();
-    Float getRankAverage();
-    Long getNbWin();
+    Integer getNbVictory();
+    Float getAvgRank();
 
 }

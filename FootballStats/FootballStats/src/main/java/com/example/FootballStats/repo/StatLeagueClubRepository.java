@@ -70,8 +70,8 @@ public interface StatLeagueClubRepository extends CrudRepository<StatLeagueClub,
                           leaguename,
                           clubid,
                           clubname,
-                          rankaverage,
-                          nbwin
+                          nbvictory,
+                          avgrank
                     FROM materialized_view_league_all_time_best_club_aggregated_data
                          WHERE (:league_id IS NULL OR leagueid = :league_id)
                     """, nativeQuery = true)
