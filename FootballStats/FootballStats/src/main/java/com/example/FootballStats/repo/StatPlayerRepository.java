@@ -19,6 +19,34 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
 
     List<StatPlayer> findByPlayer(Optional<Player> player);
 
+    @Query(value=
+            """
+                    SELECT
+                    *
+                    FROM
+                    (
+                    SELECT
+                          club_id as clubid,
+                          player_id as playerid,
+                          player_name as playername,
+                          player_position as playerposition,
+                          nationality_name as nationalityname,
+                          club_name as clubname,
+                          all_nb_games as allnbgames,
+                          all_goals as allgoals,
+                          all_assists as allassists,
+                          ROUND(avg_minutes,1) as avgminutes,
+                          all_yellow_cards as allyellowcards,
+                          all_red_cards as allredcards,
+                          goals_per_game as goalspergame,
+                          assists_per_game as assistspergame
+                    FROM materialized_view_players_by_club_aggregated_data
+                        WHERE (:player_id IS NULL OR player_id = :player_id)
+                    ) as sub
+                    """, nativeQuery = true)
+    List<IPlayersByClubCount> findPlayerStatsPerClub(@Param("player_id") Long player_id);
+
+
     @Query(""" 
             SELECT st FROM StatPlayer st 
             
@@ -143,7 +171,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           assists_per_game as assistspergame
                     FROM materialized_view_players_by_club_aggregated_data
                         WHERE (:player_id IS NULL OR player_id = :player_id)
-                            AND (:club_id IS NULL OR club_id = :club_id)
+                            AND (:club_id IS NULL OR club_id = :club_id)materialized_view_players_by_club_aggregated_data
                             AND (:player_name IS NULL OR LOWER(player_name) LIKE '%' || LOWER(:player_name) || '%')
                             AND (:player_position IS NULL OR player_position LIKE '%' || :player_position || '%')
                             AND (:nationality_name IS NULL OR nationality_name LIKE :nationality_name)
@@ -248,4 +276,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     LIMIT 10
                     """, nativeQuery = true)
     List<IPlayersByClubCount> findTop10BestPlaymakersByClub(@Param("club_id") Integer club_id);
+
+
+
 }
