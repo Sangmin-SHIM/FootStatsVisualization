@@ -171,7 +171,7 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                           assists_per_game as assistspergame
                     FROM materialized_view_players_by_club_aggregated_data
                         WHERE (:player_id IS NULL OR player_id = :player_id)
-                            AND (:club_id IS NULL OR club_id = :club_id)materialized_view_players_by_club_aggregated_data
+                            AND (:club_id IS NULL OR club_id = :club_id)
                             AND (:player_name IS NULL OR LOWER(player_name) LIKE '%' || LOWER(:player_name) || '%')
                             AND (:player_position IS NULL OR player_position LIKE '%' || :player_position || '%')
                             AND (:nationality_name IS NULL OR nationality_name LIKE :nationality_name)
