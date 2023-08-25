@@ -46,6 +46,25 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     """, nativeQuery = true)
     List<IPlayersByClubCount> findPlayerStatsPerClub(@Param("player_id") Long player_id);
 
+    @Query(value=
+            """
+                    SELECT
+                    playerid,
+                    playername,
+                    playerposition,
+                    nationalityname,
+                    allnbgames,
+                    allgoals,
+                    allassists,
+                    allyellowcards,
+                    allredcards,
+                    avgminutes
+                    FROM
+                        materialized_view_player_aggregated_data
+                    WHERE (:playerid IS NULL OR playerid=:playerid)
+                    """, nativeQuery = true)
+    List<IPlayerCount> findPlayerAllStats(@Param("playerid") Long playerid);
+
 
     @Query(""" 
             SELECT st FROM StatPlayer st 
@@ -276,7 +295,5 @@ public interface StatPlayerRepository extends CrudRepository<StatPlayer, Long> {
                     LIMIT 10
                     """, nativeQuery = true)
     List<IPlayersByClubCount> findTop10BestPlaymakersByClub(@Param("club_id") Integer club_id);
-
-
 
 }

@@ -135,7 +135,7 @@ public class StatPlayerController {
         }
 
     }
-    @RequestMapping(path="/all_aggregated_stats", method= RequestMethod.GET)
+    @RequestMapping(path="/all_aggregated_stats_per_season", method= RequestMethod.GET)
     public List<StatPlayer> getPlayerAllStatsById (@RequestParam("player_id") Long player_id){
         Optional<Player> player = playerRepository.findById(player_id);
         return statPlayerRepository.findByPlayer(player);
@@ -145,4 +145,10 @@ public class StatPlayerController {
     public List<IPlayersByClubCount> getPlayerAllStatsPerClub(@RequestParam("player_id") Long player_id){
         return statPlayerRepository.findPlayerStatsPerClub(player_id);
     }
+
+    @RequestMapping(path="/all_aggregated_stats", method= RequestMethod.GET)
+    public List<IPlayerCount> getPlayerAllStats(@RequestParam("player_id") Long player_id) {
+        return statPlayerRepository.findPlayerAllStats(player_id);
+    }
+
 }
